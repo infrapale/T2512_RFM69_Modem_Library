@@ -126,7 +126,7 @@ UART Command Syntax
 
 ******** UART ***************** Transmit Raw ********* Radio ********************
                                     --------
-  <#X1T:Hello World>\n             |      |
+   <#X1T:Hello World>\n             |      |
   --------------------------------->|      | Hello World
                                     |      |-------------------------------------->
                                     |      |
@@ -136,7 +136,7 @@ UART Command Syntax
 
   ******** UART ***************** Transmit Node ********* Radio ********************
                                     --------
-  <#X1N:RMH1;RKOK1;T;->\n          |      |
+   <#X1N:RMH1;RKOK1;T;->\n          |      |
   --------------------------------->|      | {"Z":"MH1","S":"RKOK1","V":"T","R":"-"}
                                     |      |-------------------------------------->
                                     |      |
@@ -202,17 +202,7 @@ UART Command Syntax
 
   Relay Mesage      <#R12=x>   x:  0=off, 1=on, T=toggle
 
-
 *******************************************************************************
-UART Commands
--  UART_CMD_TRANSMIT_RAW   = 'T',
--  UART_CMD_TRANSMIT_NODE  = 'N',
--  UART_CMD_GET_AVAIL      = 'A',
--  UART_CMD_READ_RAW       = 'R',
--  UART_CMD_READ_NODE      = 'O' 
 
-UART Replies
--  UART_REPLY_AVAILABLE    = 'a',
--  UART_REPLY_READ_RAW     = 'r',
--  UART_REPLY_READ_NODE    = 'o' 
+
 
