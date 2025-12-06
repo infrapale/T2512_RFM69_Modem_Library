@@ -1,8 +1,7 @@
 #ifndef __RFM69_H__
 #define __RFM69_H__
-
+#include "local.h"
 #include <RH_RF69.h>
-#include "main.h"
 
 //*********************************************************************************************
 // *********** IMPORTANT SETTINGS - YOU MUST CHANGE/ONFIGURE TO FIT YOUR HARDWARE *************
@@ -58,6 +57,8 @@ void rfm69_receive_message(void);
 /// @param
 /// @return
 bool rfm69_receive_message_is_avail(void);
+
+void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail);
 
 void rfm69_clr_receive_message_flag(void);
 

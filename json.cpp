@@ -1,3 +1,4 @@
+#include "local.h"
 #include "uart.h"
 #include "json.h"
 

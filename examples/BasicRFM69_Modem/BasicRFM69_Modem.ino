@@ -35,36 +35,26 @@ Relay Mesage      <#R12=x>   x:  0=off, 1=on, T=toggle
 #endif
 #include "secrets.h"
 #include <RH_RF69.h>
-#include <VillaAstridCommon.h>
 #include "atask.h"
 #include "Rfm69Modem.h"
-// #include "json.h"
-// #include "rfm69.h"
-// #include "uart.h"
 #include "io.h"
 
 #define ZONE  "OD_1"
 //*********************************************************************************************
 #define SERIAL_BAUD   9600
 #define ENCRYPTKEY    RFM69_KEY   // defined in secret.h
-
-
 RH_RF69         rf69(RFM69_CS, RFM69_INT);
-Rfm69Modem      rfm69_modem(&rf69, RFM69_RST, PIN_LED_ONBOARD );
-
-// RH_RF69         rf69(RFM69_CS, RFM69_INT);
-// RH_RF69         *rf69p;
-module_data_st  module = {MY_MODULE_TAG, MY_MODULE_ADDR};
-time_type       MyTime = {2023, 11,01,1,01,55}; 
+Rfm69Modem      rfm69_modem(&rf69, MY_MODULE_TAG, MY_MODULE_ADDR, RFM69_RST, PIN_LED_ONBOARD );
+modem_data_st   modem_data = {MY_MODULE_TAG, MY_MODULE_ADDR};
 
 #define NBR_TEST_MSG  4
 #define LEN_TEST_MSG  32
 const char test_msg[NBR_TEST_MSG][LEN_TEST_MSG] =
 {  //12345678901234567890123456789012
-    "<#X1N:Dock;T_bmp1;9.1;->",
-    "<#X1N:Dock;T_dht22;8.7;->",
-    "<#X1N:Dock;T_Water;5.3;->",
-    "<#X1N:Dock;ldr1;0.33;->",
+    "<R1X1J1:Dock;T_bmp1;9.1;->",
+    "<R1X1J1:Dock;T_dht22;8.7;->",
+    "<R1X1J1:Dock;T_Water;5.3;->",
+    "<R1X1J1:Dock;ldr1;0.33;->",
 };
 
 void debug_print_task(void);
@@ -76,7 +66,6 @@ void modem_task(void);
 
 atask_st debug_print_handle        = {"Debug Print    ", 5000,0, 0, 255, 0, 1, debug_print_task};
 atask_st clock_handle              = {"Tick Task      ", 100,0, 0, 255, 0, 1, run_100ms};
-//atask_st rfm_receive_handle        = {"Receive <- RFM ", 500,0, 0, 255, 0, 1, rfm_receive_task};
 atask_st modem_handle              = {"Radio Modem    ", 100,0, 0, 255, 0, 1, modem_task};
 #ifdef SEND_TEST_MSG
 atask_st send_test_data_handle     = {"Send Test Task ", 10000,0, 0, 255, 0, 1, send_test_data_task};
@@ -114,7 +103,7 @@ void setup()
     initialize_tasks();
     uint8_t key[] = RFM69_KEY;
     rfm69_modem.initialize(key);
-
+    rfm69_modem.radiate(__APP__);
     #ifdef ADAFRUIT_FEATHER_M0
     // Initialze WDT with a 2 sec. timeout
     wdt_init ( WDT_CONFIG_PER_16K );
@@ -124,28 +113,25 @@ void setup()
     #endif
 }
 
-
-
+#define BUFF_LEN   80
+char mbuff[BUFF_LEN];
 void loop() 
 {
+
     atask_run();  
+    if(rfm69_modem.msg_is_avail())
+    {
+        rfm69_modem.receive(mbuff, BUFF_LEN, true);
+        Serial.println(mbuff);
+        delay(500);
+        rfm69_modem.radiate_node_json("<R1X1J1:Dock;T_bmp1;9.1;->");
+        //rfm69_modem.radiate("OK");
+    }
 }
 
 void modem_task(void)
 {
     rfm69_modem.modem_task();
-}
-
-
-void rfm_receive_task(void) 
-{
-    rfm69_receive_message();
-    #ifdef ADAFRUIT_FEATHER_M0
-    wdt_reset();
-    #endif
-    #ifdef PRO_MINI_RFM69
-    // watchdog.clear();
-    #endif
 }
 
 

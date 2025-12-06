@@ -3,6 +3,7 @@
 #include <RH_RF69.h>
 #include <SPI.h>
 #include "rfm69.h"
+#include "local.h"
 
 RH_RF69 *rf69p;
 
@@ -113,6 +114,17 @@ void rfm69_receive_message(void)
         }
     }
 }
+
+void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail)
+{
+	buff[0] = 0x00;
+	rfm69_receive_message();
+	if(receive_msg.avail)
+	{
+		strncpy(buff,(char*)receive_msg.radio_msg, max_len);
+		if (clr_avail) receive_msg.avail = false;
+	}	
+}	
 
 bool rfm69_receive_message_is_avail(void)
 {

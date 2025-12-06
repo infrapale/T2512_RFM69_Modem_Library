@@ -1,5 +1,6 @@
 #ifndef __UART_H__
 #define __UART_H__
+#include "local.h"
 #include "rfm69.h"
 
 #define UART_MAX_BLOCK_LEN  8
@@ -100,12 +101,14 @@ typedef struct
     uart_rx_st      rx;
     uart_tx_st      tx;
     uart_node_st    node;
+	char 			mod_tag;
+	char 			mod_addr;
 } uart_msg_st;
 
 /// @brief Clear rx available
 /// @param  -
 /// @return -
-void uart_initialize(void);
+void uart_initialize(char mod_tag, char mod_addr);
 
 /// @brief  Get pointer to module data
 /// @param
@@ -138,6 +141,8 @@ void uart_rx_build_rfm_array(void);
 /// @param  UART command
 /// @return
 void uart_exec_cmnd(uart_cmd_et ucmd);
+
+void uart_radiate_node_json(char *buff);
 
 
 void uart_rx_task(void);

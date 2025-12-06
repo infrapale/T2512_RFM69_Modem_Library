@@ -1,5 +1,7 @@
 #ifndef __JSON_H__
 #define __JSON_H__
+#include "local.h"
+//#include "Rfm69Modem.h"
 #include "uart.h"
 
 /// @brief  Convert simple node sytax to json

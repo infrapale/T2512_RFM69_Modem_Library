@@ -1,10 +1,10 @@
+#include "local.h"
+
 #include "uart.h"
 #include "json.h"
 #include "rfm69.h"
-#include "io.h"
 
 uart_msg_st         uart;
-extern module_data_st  module;
 
 void uart_rx_task(void);
 
@@ -14,9 +14,11 @@ uart_msg_st *uart_get_data_ptr(void)
     return &uart;
 }
 
-void uart_initialize(void)
+void uart_initialize(char mod_tag, char mod_addr)
 {
     uart.rx.avail = false;
+	uart.mod_tag = mod_tag;
+	uart.mod_addr = mod_addr;
 }
 
 void uart_read_uart(void)
@@ -24,7 +26,6 @@ void uart_read_uart(void)
     if (SerialX.available())
     {
         String Str;
-        io_led_flash(LED_INDX_BLUE,20);
         Str  = SerialX.readStringUntil('\n');
         #ifdef MODEM_DEBUG_PRINT
         Serial.println(Str);
@@ -62,8 +63,8 @@ void uart_parse_rx_frame(void)
     }
 
     if ((uart.rx.msg[0] != '<') || 
-        (uart.rx.frame.tag != module.tag) || 
-        (uart.rx.frame.addr  != module.addr) || 
+        (uart.rx.frame.tag != uart.mod_tag) || 
+        (uart.rx.frame.addr  != uart.mod_addr) || 
         (uart.rx.msg[uart.rx.len-1] != '>'))  do_continue = false;
 
     if (do_continue)
@@ -168,11 +169,18 @@ void uart_rx_send_rfm_from_raw(void)
 
 void uart_rx_send_rfm_from_node(void)
 {
-    //uart.rx.str = uart.rx.str.substring(6,uart.rx.len - 1);
+	uint16_t len = strlen(uart.rx.msg);
+	uart.rx.msg[len-1] = 0x00;
     uart_build_node_from_rx_str();
     rfm_send_msg_st *send_p = rfm69_get_send_data_ptr();
     json_convert_uart_node_to_json(send_p->radio_msg, &uart);
     rfm69_radiate_msg(send_p->radio_msg);
+}
+
+void uart_radiate_node_json(char *buff)
+{
+	memcpy(uart.rx.msg,buff,MAX_MESSAGE_LEN);
+	uart_rx_send_rfm_from_node();
 }
 
 
@@ -181,11 +189,9 @@ void uart_exec_cmnd(uart_cmd_et ucmd)
     switch(ucmd)
     {
         case UART_CMD_TRANSMIT_RAW:
-            io_led_flash(LED_INDX_RED, 10);
             uart_rx_send_rfm_from_raw();
             break;
         case UART_CMD_TRANSMIT_NODE:
-            io_led_flash(LED_INDX_RED, 20);
             uart_rx_send_rfm_from_node();
             break;
         case UART_CMD_GET_AVAIL:
