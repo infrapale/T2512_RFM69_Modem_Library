@@ -271,7 +271,7 @@ void uart_rx_task(void)
                 else rx_state = 10;
             break;
         case 30:
-            uart_exec_cmnd(uart.rx.frame.function);
+            uart_exec_cmnd((uart_cmd_et)uart.rx.frame.function);
             rx_state = 10;
             break;
         case 40:

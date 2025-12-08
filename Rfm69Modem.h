@@ -16,6 +16,9 @@ typedef struct
     uint32_t 	led_timeout;
 } rf_modem_st;
 
+static void led_on(uint32_t duration_ms);
+
+
 class Rfm69Modem
 {
     private:
@@ -25,7 +28,6 @@ class Rfm69Modem
 		RH_RF69   *_rf69p;
 		Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_rfm69_rst,uint8_t pin_led);
 
-        static void led_on(uint32_t duration_ms);
 
         void initialize(uint8_t key[]);
 

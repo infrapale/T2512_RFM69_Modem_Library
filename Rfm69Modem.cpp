@@ -9,6 +9,11 @@
 
 static uint32_t led_timeout_ms;
 
+static void led_on(uint32_t duration_ms)
+{
+    led_timeout_ms = millis() + duration_ms;
+
+}
 
 
 Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_rfm69_rst,uint8_t pin_led)
@@ -22,18 +27,13 @@ Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_
     led_timeout_ms        = millis() + 4000;
 }
 
-static void Rfm69Modem::led_on(uint32_t duration_ms)
-{
-    led_timeout_ms = millis() + duration_ms;
-
-}
 
 void Rfm69Modem::initialize(uint8_t key[]){
     pinMode(modem.pin_rfm69_rst, OUTPUT);
     pinMode(modem.pin_led, OUTPUT);
     rfm69_initialize(_rf69p, modem.pin_rfm69_rst, key);
     uart_initialize(modem.tag, modem.addr);
-    rfm69_set_led_cb(Rfm69Modem::led_on);
+    rfm69_set_led_cb(led_on);
 
 }
 

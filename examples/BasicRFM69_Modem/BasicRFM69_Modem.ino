@@ -124,7 +124,7 @@ void loop()
         rfm69_modem.receive(mbuff, BUFF_LEN, true);
         Serial.println(mbuff);
         delay(500);
-        rfm69_modem.radiate_node_json("<R1X1J1:Dock;T_bmp1;9.1;->");
+        rfm69_modem.radiate_node_json((char*) "<R1X1J1:Dock;T_bmp1;9.1;->");
         //rfm69_modem.radiate("OK");
     }
 }
