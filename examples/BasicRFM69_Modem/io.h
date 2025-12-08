@@ -10,8 +10,8 @@
 
 #ifdef ADA_PICO_FEATHER
 #define RFM69_CS      10
-#define RFM69_INT     6
-#define RFM69_IRQN    0  
+#define RFM69_INT     8
+//#define RFM69_IRQN    0  
 #define RFM69_RST     11
 #define PIN_LED_BLUE  9
 #endif

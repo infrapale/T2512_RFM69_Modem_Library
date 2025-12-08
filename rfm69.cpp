@@ -144,7 +144,7 @@ void rfm69_radiate_msg( char *radio_msg )
     //Serial.print("rfm69_radiate_msg: "); Serial.println(radio_msg); 
     if (radio_msg[0] != 0)
     {
-        #ifdef DEBUG_PRINT
+        #ifdef MODEM_DEBUG_PRINT
         Serial.println(radio_msg);
         #endif
         rf69p->waitPacketSent();

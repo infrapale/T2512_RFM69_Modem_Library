@@ -1,7 +1,6 @@
 #ifndef __RFM69MODEM_H__
 #define __RFM69MODEM_H__
 
-#undef      MODEM_DEBUG_PRINT
 #include "local.h"
 #include <RH_RF69.h>
 
