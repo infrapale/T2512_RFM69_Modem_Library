@@ -149,9 +149,18 @@ void uart_build_node_tx_str(void)
     }
 }
 
-void uart_copy_tx( char *buff, uint8_t max_len)
+void uart_get_decoded_msg( char *buff, uint8_t max_len)
 {
-	strncpy(buff, uart.tx.msg, max_len);
+	buff[0] = 0x00;
+	rfm69_receive_message();
+	if(rfm69_receive_message_is_avail())
+	{
+		//strncpy(buff,(char*)receive_msg.radio_msg, max_len);
+		if (clr_avail) receive_msg.avail = false;
+
+		uart_build_node_tx_str();
+		strncpy(buff,(char*)receive_msg.radio_msg, max_len);
+	}
 }
 
 

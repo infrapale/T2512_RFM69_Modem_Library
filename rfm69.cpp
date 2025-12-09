@@ -126,16 +126,6 @@ void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail)
 	}	
 }	
 
-void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail)
-{
-	buff[0] = 0x00;
-	rfm69_receive_message();
-	if(receive_msg.avail)
-	{
-		strncpy(buff,(char*)receive_msg.radio_msg, max_len);
-		if (clr_avail) receive_msg.avail = false;
-	}	
-}	
 
 
 bool rfm69_receive_message_is_avail(void)
