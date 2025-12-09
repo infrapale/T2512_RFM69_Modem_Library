@@ -126,6 +126,18 @@ void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail)
 	}	
 }	
 
+void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail)
+{
+	buff[0] = 0x00;
+	rfm69_receive_message();
+	if(receive_msg.avail)
+	{
+		strncpy(buff,(char*)receive_msg.radio_msg, max_len);
+		if (clr_avail) receive_msg.avail = false;
+	}	
+}	
+
+
 bool rfm69_receive_message_is_avail(void)
 {
     bool  is_avail = receive_msg.avail;
@@ -138,6 +150,7 @@ void rfm69_clr_receive_message_flag(void)
     receive_msg.avail = false;
 }
 
+
 //*****************   Send   *****************************************
 void rfm69_radiate_msg( char *radio_msg )
 {
@@ -147,7 +160,7 @@ void rfm69_radiate_msg( char *radio_msg )
         #ifdef MODEM_DEBUG_PRINT
         Serial.println(radio_msg);
         #endif
-        //rf69p->waitPacketSent();
+        rf69p->waitPacketSent();
         rf69p->send((uint8_t *)radio_msg, strlen(radio_msg));      
     }
 }

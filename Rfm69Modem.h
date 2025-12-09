@@ -40,6 +40,9 @@ class Rfm69Modem
 		bool msg_is_avail(void);
 		
 		void receive(char *buff, uint8_t max_len, bool clr_avail);
+		
+		void receive_decode(char *buff, uint8_t max_len, bool clr_avail);
+		
 
 };
 

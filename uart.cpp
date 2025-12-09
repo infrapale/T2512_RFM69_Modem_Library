@@ -149,6 +149,12 @@ void uart_build_node_tx_str(void)
     }
 }
 
+void uart_copy_tx( char *buff, uint8_t max_len)
+{
+	strncpy(buff, uart.tx.msg, max_len);
+}
+
+
 void uart_build_raw_tx_str(void)
 {
     rfm_receive_msg_st *receive_p = rfm69_get_receive_data_ptr();

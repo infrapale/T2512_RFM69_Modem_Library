@@ -144,6 +144,8 @@ void uart_exec_cmnd(uart_cmd_et ucmd);
 
 void uart_radiate_node_json(char *buff);
 
+void uart_copy_tx( char *buff, uint8_t max_len);
+
 
 void uart_rx_task(void);
 
