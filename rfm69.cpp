@@ -147,7 +147,7 @@ void rfm69_radiate_msg( char *radio_msg )
         #ifdef DEBUG_PRINT
         Serial.println(radio_msg);
         #endif
-        rf69p->waitPacketSent();
+        //rf69p->waitPacketSent();
         rf69p->send((uint8_t *)radio_msg, strlen(radio_msg));      
     }
 }
