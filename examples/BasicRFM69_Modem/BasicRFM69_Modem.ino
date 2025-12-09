@@ -39,7 +39,6 @@ Relay Mesage      <#R12=x>   x:  0=off, 1=on, T=toggle
 #include "Rfm69Modem.h"
 #include "io.h"
 
-#define ZONE  "OD_1"
 //*********************************************************************************************
 #define SERIAL_BAUD   9600
 #define ENCRYPTKEY    RFM69_KEY   // defined in secret.h

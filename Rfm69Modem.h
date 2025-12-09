@@ -33,7 +33,8 @@ class Rfm69Modem
         void modem_task(void);
 
         void radiate(char *buff);
-
+		
+		/// <R1X1J0=RMH1;RKOK1;T;->
 		void radiate_node_json(char *buff);
 		
 		bool msg_is_avail(void);
