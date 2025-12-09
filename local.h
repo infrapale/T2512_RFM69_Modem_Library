@@ -7,6 +7,9 @@
 #define SerialX Serial
 #endif
 
+#undef      MODEM_DEBUG_PRINT
+//#define     MODEM_DEBUG_PRINT
+
 //typedef void (*led_on_callback(uint32_t duration_ms));
 
 typedef enum
