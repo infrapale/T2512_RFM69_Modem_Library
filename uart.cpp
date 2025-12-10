@@ -121,45 +121,51 @@ void uart_build_node_from_rx_str(void)
 }
 
 
+void uart_decode_node_str(char *msg_decoded, char *msg_in, uint8_t max_len)
+{
+	String StrRadio = msg_in;  
+	String StrTx ="";
+	
+	StrTx += json_parse_tag(StrRadio, "{\"Z");
+	StrTx += ';';
+	StrTx += json_parse_tag(StrRadio, ",\"S");
+	StrTx += ';';
+	StrTx += json_parse_tag(StrRadio, ",\"V");
+	StrTx += ';';
+	StrTx += json_parse_tag(StrRadio, ",\"R");
+	//Serial.println(StrRadio); Serial.println(StrTx);
+	StrTx.toCharArray(msg_decoded, max_len);
+}
+
+
 void uart_build_node_tx_str(void)
 {
     uart_prepare_reply();
     if(rfm69_receive_message_is_avail()){
         rfm_receive_msg_st *receive_p = rfm69_get_receive_data_ptr();
         String StrRadio = (char*) receive_p->radio_msg;  
-        String StrTx ="";
-        json_pick_data_from_rx(&uart);
-        
-        StrTx += json_parse_tag(StrRadio, "{\"Z");
-        StrTx += ';';
-        StrTx += json_parse_tag(StrRadio, ",\"S");
-        StrTx += ';';
-        StrTx += json_parse_tag(StrRadio, ",\"V");
-        StrTx += ';';
-        StrTx += json_parse_tag(StrRadio, ",\"R");
-        StrTx += '>';
-
-        StrTx.toCharArray(&uart.tx.msg[UART_FRAME_POS_DATA], UART_MAX_REPLY_LEN - UART_FRAME_POS_END -3);
+		uart_decode_node_str(&uart.tx.msg[UART_FRAME_POS_DATA],
+				receive_p->radio_msg, 
+				UART_MAX_REPLY_LEN - UART_FRAME_POS_END -3);
         uint8_t len = strlen(uart.tx.msg);
         uart.tx.msg[len-1] = '>';
         uart.tx.msg[len] = 0x00;
     }
     else {
-        // return an empty frame  starting with '-'
+        // return an empty frame  starting with '*'
     }
 }
 
-void uart_get_decoded_msg( char *buff, uint8_t max_len)
+void uart_get_decoded_msg( char *buff, uint8_t max_len, bool clr_avail)
 {
 	buff[0] = 0x00;
 	rfm69_receive_message();
 	if(rfm69_receive_message_is_avail())
 	{
+        rfm_receive_msg_st *receive_p = rfm69_get_receive_data_ptr();
 		//strncpy(buff,(char*)receive_msg.radio_msg, max_len);
-		if (clr_avail) receive_msg.avail = false;
-
-		uart_build_node_tx_str();
-		strncpy(buff,(char*)receive_msg.radio_msg, max_len);
+		if (clr_avail) rfm69_clr_receive_message_flag();
+		uart_decode_node_str(buff, receive_p->radio_msg, max_len);
 	}
 }
 

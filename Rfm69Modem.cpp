@@ -69,6 +69,6 @@ void Rfm69Modem::receive(char *buff, uint8_t max_len, bool clr_avail)
 
 void Rfm69Modem::receive_decode(char *buff, uint8_t max_len, bool clr_avail)
 {
-	uart_get_decoded_msg( buff, max_len, clr_avail);
+	uart_get_decoded_msg(buff, max_len, clr_avail);
 	
 }
