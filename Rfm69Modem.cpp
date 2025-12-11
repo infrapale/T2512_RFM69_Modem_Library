@@ -72,3 +72,8 @@ void Rfm69Modem::receive_decode(char *buff, uint8_t max_len, bool clr_avail)
 	uart_get_decoded_msg(buff, max_len, clr_avail);
 	
 }
+
+int16_t Rfm69Modem::get_last_rssi(void)
+{
+	return rfm69_get_last_rssi(); 
+}

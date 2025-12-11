@@ -1,4 +1,4 @@
-# T2311_RFM69_Modem
+# T25121_RFM69_Modem
 
 *******************************************************************************
                   -------------------
@@ -26,6 +26,7 @@ Library Object Interface:
 - bool msg_is_avail(void);
 - void receive(char *buff, uint8_t max_len, bool clr_avail);
 - void receive_decode(char *buff, uint8_t max_len, bool clr_avail);
+- int16_t get_last_rssi(void);
 *******************************************************************************
 Usage Example:
 

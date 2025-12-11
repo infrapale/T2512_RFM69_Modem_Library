@@ -42,6 +42,8 @@ class Rfm69Modem
 		void receive(char *buff, uint8_t max_len, bool clr_avail);
 		
 		void receive_decode(char *buff, uint8_t max_len, bool clr_avail);
+
+		int16_t get_last_rssi(void);
 		
 
 };
