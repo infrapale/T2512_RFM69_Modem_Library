@@ -16,11 +16,9 @@ static void led_on(uint32_t duration_ms)
 }
 
 
-Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_rfm69_rst,uint8_t pin_led)
+Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, uint8_t pin_rfm69_rst,uint8_t pin_led)
 {
     _rf69p = rf69p;
-	modem.tag             = mod_tag;
-	modem.addr            = mod_addr;
     modem.pin_rfm69_rst   = pin_rfm69_rst;
     modem.pin_led         = pin_led;
     modem.led_timeout     = millis() + 4000;
@@ -28,7 +26,9 @@ Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_
 }
 
 
-void Rfm69Modem::initialize(uint8_t key[]){
+void Rfm69Modem::initialize(char mod_tag, char mod_addr, uint8_t key[]){
+	modem.tag             = mod_tag;
+	modem.addr            = mod_addr;
     pinMode(modem.pin_rfm69_rst, OUTPUT);
     pinMode(modem.pin_led, OUTPUT);
     rfm69_initialize(_rf69p, modem.pin_rfm69_rst, key);
@@ -53,10 +53,36 @@ void Rfm69Modem::radiate(char *buff)
     rfm69_radiate_msg( buff);
 }
 
-void Rfm69Modem::radiate_node_json(char *buff)
+//void Rfm69Modem::radiate_node_json(char *buff)
+//{
+//	uart_radiate_node_json(buff);
+//}
+
+void Rfm69Modem::radiate_node_json(
+	char to_tag, 
+	char to_addr, 
+	char func,
+	char findx,
+	char action,
+	char *buff)
 {
-	uart_radiate_node_json(buff);
+	char b[MAX_MESSAGE_LEN] = {0};
+	b[0] = '<';
+	b[1] = to_tag;
+	b[2] = to_addr;
+	b[3] = modem.tag;
+	b[4] = modem.addr;
+	b[5] = func;
+	b[6] = findx;
+	b[7] = action;
+	strncpy(&b[8], buff, MAX_MESSAGE_LEN-8);
+	uint8_t len = strlen(b);
+	b[len] = '>';
+	b[len+1] = 0x00;
+	
+	uart_radiate_node_json(b);
 }
+
 
 bool Rfm69Modem::msg_is_avail(void)
 {

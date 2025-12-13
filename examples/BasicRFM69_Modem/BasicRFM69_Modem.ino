@@ -120,7 +120,7 @@ void loop()
     atask_run();  
     if(rfm69_modem.msg_is_avail())
     {
-        rfm69_modem.receive(mbuff, BUFF_LEN, true);
+        rfm69_modem.get_msg/mbuff, BUFF_LEN, true);
         Serial.println(mbuff);
         delay(500);
         rfm69_modem.radiate_node_json((char*) "<R1X1J1:Dock;T_bmp1;9.1;->");

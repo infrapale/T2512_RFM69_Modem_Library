@@ -25,17 +25,22 @@ class Rfm69Modem
 
     public:
 		RH_RF69   *_rf69p;
-		Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_rfm69_rst,uint8_t pin_led);
+		Rfm69Modem(RH_RF69 *rf69p, uint8_t pin_rfm69_rst,uint8_t pin_led);
 
-
-        void initialize(uint8_t key[]);
+        void initialize(char mod_tag, char mod_addr, uint8_t key[]);
 
         void modem_task(void);
 
         void radiate(char *buff);
 		
 		/// <R1X1J0=RMH1;RKOK1;T;->
-		void radiate_node_json(char *buff);
+		void radiate_node_json(
+			char to_tag, 
+			char to_addr, 
+			char func,
+			char findx,
+			char action,
+			char *buff);
 		
 		bool msg_is_avail(void);
 		
