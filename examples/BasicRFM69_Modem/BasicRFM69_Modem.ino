@@ -90,14 +90,14 @@ void initialize_tasks(void)
 
 void setup() 
 {
-    //while (!Serial); // wait until serial console is open, remove if not tethered to computer
+    while (!Serial); // wait until serial console is open, remove if not tethered to computer
     delay(2000);
     Serial.begin(9600);
     Serial.print(__APP__); Serial.print(F(" Compiled: "));
     Serial.print(__DATE__); Serial.print(" ");
     Serial.print(__TIME__); Serial.println();
 
-    SerialX.begin(9600);
+    //SerialX.begin(9600);
     atask_initialize();
     io_initialize();
     initialize_tasks();
