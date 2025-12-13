@@ -39,7 +39,8 @@ void Rfm69Modem::initialize(uint8_t key[]){
 
 void Rfm69Modem::modem_task(void){
     uart_rx_task();
-    rfm69_receive_message();
+	rfm69_receive_task();
+    // rfm69_receive_message();
     // Serial.print("led_timeout_ms= "); Serial.print(led_timeout_ms);
     // Serial.print(" > "); Serial.println(millis());
     if (millis() < led_timeout_ms) digitalWrite(modem.pin_led,HIGH);
@@ -62,12 +63,12 @@ bool Rfm69Modem::msg_is_avail(void)
 	return rfm69_receive_message_is_avail();
 }
 
-void Rfm69Modem::receive(char *buff, uint8_t max_len, bool clr_avail)
+void Rfm69Modem::get_msg(char *buff, uint8_t max_len, bool clr_avail)
 {
 	rfm69_get_message(buff, max_len, clr_avail);
 }
 
-void Rfm69Modem::receive_decode(char *buff, uint8_t max_len, bool clr_avail)
+void Rfm69Modem::get_msg_decode(char *buff, uint8_t max_len, bool clr_avail)
 {
 	uart_get_decoded_msg(buff, max_len, clr_avail);
 	

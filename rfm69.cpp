@@ -7,7 +7,7 @@
 
 RH_RF69 *rf69p;
 
-rfm_receive_msg_st  receive_msg;
+rfm_receive_msg_st  receive_msg = {0};
 rfm_send_msg_st     send_msg;
 rfm69_st rfm69 ={ .transparent = false};
 
@@ -130,9 +130,7 @@ void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail)
 
 bool rfm69_receive_message_is_avail(void)
 {
-    bool  is_avail = receive_msg.avail;
-    // receive_msg.avail = false;
-    return  is_avail;
+    return  receive_msg.avail;
 }
 
 void rfm69_clr_receive_message_flag(void)
@@ -140,6 +138,25 @@ void rfm69_clr_receive_message_flag(void)
     receive_msg.avail = false;
 }
 
+void rfm69_receive_task(void)
+{
+	switch(receive_msg.state)
+	{
+		case 0:
+			receive_msg.avail = false;
+			receive_msg.state = 10;
+			break;
+		case 10:
+			if(!receive_msg.avail){
+				rfm69_receive_message();
+				// if(receive_msg.avail) receive_msg.state = 20; 
+			}
+			break;
+		case 20:
+			receive_msg.state = 10;
+			break;
+	}
+}
 
 //*****************   Send   *****************************************
 void rfm69_radiate_msg( char *radio_msg )
