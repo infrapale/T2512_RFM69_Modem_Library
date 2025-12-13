@@ -8,18 +8,27 @@
 #define RFM69_RST     4
 #endif
 
+#ifdef ADA_PICO_FEATHER
+#define RFM69_CS      10
+#define RFM69_INT     8
+//#define RFM69_IRQN    0  
+#define RFM69_RST     11
+#define PIN_LED_BLUE  9
+#endif
+
+
 #ifdef PRO_MINI_RFM69
 #define RFM69_CS      10
 #define RFM69_INT     2
 #define RFM69_IRQN    0  // Pin 2 is IRQ 0!
 #define RFM69_RST     9
+#define PIN_LED_BLUE    A7
 #endif
 // LED Definitions
 #define PIN_LED_ONBOARD 13  // onboard blinky
 #define LED_NBR_OF      4
 #define PIN_LED_RED     5
 #define PIN_LED_GREEN   4
-#define PIN_LED_BLUE    A7
 
 typedef enum
 {

@@ -39,7 +39,6 @@ Relay Mesage      <#R12=x>   x:  0=off, 1=on, T=toggle
 #include "Rfm69Modem.h"
 #include "io.h"
 
-#define ZONE  "OD_1"
 //*********************************************************************************************
 #define SERIAL_BAUD   9600
 #define ENCRYPTKEY    RFM69_KEY   // defined in secret.h
@@ -124,7 +123,7 @@ void loop()
         rfm69_modem.receive(mbuff, BUFF_LEN, true);
         Serial.println(mbuff);
         delay(500);
-        rfm69_modem.radiate_node_json("<R1X1J1:Dock;T_bmp1;9.1;->");
+        rfm69_modem.radiate_node_json((char*) "<R1X1J1:Dock;T_bmp1;9.1;->");
         //rfm69_modem.radiate("OK");
     }
 }

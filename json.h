@@ -32,7 +32,7 @@ String json_parse_tag(String json_str, const char *tag);
 /// @brief  Pick data from UART Rx string
 /// @param  Pointer to UART data
 /// @return
-void json_pick_data_from_rx(uart_msg_st *uart_p);
+////void json_pick_data_from_rx(uart_msg_st *uart_p);
 
 
 /// @brief  decode simple node string to json 

@@ -9,6 +9,11 @@
 
 static uint32_t led_timeout_ms;
 
+static void led_on(uint32_t duration_ms)
+{
+    led_timeout_ms = millis() + duration_ms;
+
+}
 
 
 Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_rfm69_rst,uint8_t pin_led)
@@ -22,29 +27,26 @@ Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_
     led_timeout_ms        = millis() + 4000;
 }
 
-static void Rfm69Modem::led_on(uint32_t duration_ms)
-{
-    led_timeout_ms = millis() + duration_ms;
-
-}
 
 void Rfm69Modem::initialize(uint8_t key[]){
     pinMode(modem.pin_rfm69_rst, OUTPUT);
     pinMode(modem.pin_led, OUTPUT);
     rfm69_initialize(_rf69p, modem.pin_rfm69_rst, key);
     uart_initialize(modem.tag, modem.addr);
-    rfm69_set_led_cb(Rfm69Modem::led_on);
+    rfm69_set_led_cb(led_on);
 
 }
 
 void Rfm69Modem::modem_task(void){
     uart_rx_task();
-    rfm69_receive_message();
+	rfm69_receive_task();
+    // rfm69_receive_message();
     // Serial.print("led_timeout_ms= "); Serial.print(led_timeout_ms);
     // Serial.print(" > "); Serial.println(millis());
     if (millis() < led_timeout_ms) digitalWrite(modem.pin_led,HIGH);
     else digitalWrite(modem.pin_led,LOW);
 }
+
 
 void Rfm69Modem::radiate(char *buff)
 {
@@ -61,7 +63,18 @@ bool Rfm69Modem::msg_is_avail(void)
 	return rfm69_receive_message_is_avail();
 }
 
-void Rfm69Modem::receive(char *buff, uint8_t max_len, bool clr_avail)
+void Rfm69Modem::get_msg(char *buff, uint8_t max_len, bool clr_avail)
 {
 	rfm69_get_message(buff, max_len, clr_avail);
+}
+
+void Rfm69Modem::get_msg_decode(char *buff, uint8_t max_len, bool clr_avail)
+{
+	uart_get_decoded_msg(buff, max_len, clr_avail);
+	
+}
+
+int16_t Rfm69Modem::get_last_rssi(void)
+{
+	return rfm69_get_last_rssi(); 
 }

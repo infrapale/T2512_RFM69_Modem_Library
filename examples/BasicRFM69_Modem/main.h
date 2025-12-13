@@ -6,6 +6,7 @@
 #define DEBUG_PRINT 
 //#define SEND_TEST_MSG 
 //#define ADA_M0_RFM69 
+//#define ADA_PICO_FEATHER
 #define PRO_MINI_RFM69
 #include <Arduino.h>
 #include "rfm69.h"

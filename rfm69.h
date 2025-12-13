@@ -38,6 +38,7 @@ typedef struct
     uint8_t         len;
     bool            avail;
     int8_t          rssi;
+	uint8_t			state;
 } rfm_receive_msg_st;
 
 /// @brief  Get pointer to module data
@@ -57,6 +58,8 @@ void rfm69_receive_message(void);
 /// @param
 /// @return
 bool rfm69_receive_message_is_avail(void);
+
+void rfm69_receive_task(void);
 
 void rfm69_get_message(char *buff, uint8_t max_len, bool clr_avail);
 

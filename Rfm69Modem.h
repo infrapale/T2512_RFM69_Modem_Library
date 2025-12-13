@@ -1,7 +1,6 @@
 #ifndef __RFM69MODEM_H__
 #define __RFM69MODEM_H__
 
-#undef      MODEM_DEBUG_PRINT
 #include "local.h"
 #include <RH_RF69.h>
 
@@ -16,6 +15,9 @@ typedef struct
     uint32_t 	led_timeout;
 } rf_modem_st;
 
+static void led_on(uint32_t duration_ms);
+
+
 class Rfm69Modem
 {
     private:
@@ -25,19 +27,24 @@ class Rfm69Modem
 		RH_RF69   *_rf69p;
 		Rfm69Modem(RH_RF69 *rf69p, char mod_tag, char mod_addr, uint8_t pin_rfm69_rst,uint8_t pin_led);
 
-        static void led_on(uint32_t duration_ms);
 
         void initialize(uint8_t key[]);
 
         void modem_task(void);
 
         void radiate(char *buff);
-
+		
+		/// <R1X1J0=RMH1;RKOK1;T;->
 		void radiate_node_json(char *buff);
 		
 		bool msg_is_avail(void);
 		
-		void receive(char *buff, uint8_t max_len, bool clr_avail);
+		void get_msg(char *buff, uint8_t max_len, bool clr_avail);
+		
+		void get_msg_decode(char *buff, uint8_t max_len, bool clr_avail);
+
+		int16_t get_last_rssi(void);
+		
 
 };
 
