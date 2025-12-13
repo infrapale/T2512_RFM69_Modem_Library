@@ -48,9 +48,29 @@ void Rfm69Modem::modem_task(void){
 }
 
 
-void Rfm69Modem::radiate(char *buff)
+void Rfm69Modem::radiate(
+	char to_tag, 
+	char to_addr, 
+	char func,
+	char findx,
+	char action,
+	char *buff)
 {
-    rfm69_radiate_msg( buff);
+	char b[MAX_MESSAGE_LEN] = {0};
+	b[0] = '<';
+	b[1] = to_tag;
+	b[2] = to_addr;
+	b[3] = modem.tag;
+	b[4] = modem.addr;
+	b[5] = func;
+	b[6] = findx;
+	b[7] = action;
+	strncpy(&b[8], buff, MAX_MESSAGE_LEN-8);
+	uint8_t len = strlen(b);
+	b[len] = '>';
+	b[len+1] = 0x00;
+	
+    rfm69_radiate_msg(b);
 }
 
 //void Rfm69Modem::radiate_node_json(char *buff)

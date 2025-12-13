@@ -31,7 +31,13 @@ class Rfm69Modem
 
         void modem_task(void);
 
-        void radiate(char *buff);
+        void radiate(
+			char to_tag, 
+			char to_addr, 
+			char func,
+			char findx,
+			char action,
+			char *buff);
 		
 		/// <R1X1J0=RMH1;RKOK1;T;->
 		void radiate_node_json(
