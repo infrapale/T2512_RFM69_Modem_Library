@@ -34,13 +34,7 @@ class Rfm69Modem
         void radiate(char *buff);
 		
 		/// <R1X1J0=RMH1;RKOK1;T;->
-		void radiate_node_json(
-			char to_tag, 
-			char to_addr, 
-			char func,
-			char findx,
-			char action,
-			char *buff);
+		void radiate_node_json(char *buff);
 		
 		bool msg_is_avail(void);
 		

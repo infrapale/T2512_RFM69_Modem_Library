@@ -59,23 +59,17 @@ void Rfm69Modem::radiate(char *buff)
 //	uart_radiate_node_json(buff);
 //}
 
-void Rfm69Modem::radiate_node_json(
-	char to_tag, 
-	char to_addr, 
-	char func,
-	char findx,
-	char action,
-	char *buff)
+void Rfm69Modem::radiate_node_json(char *buff)
 {
 	char b[MAX_MESSAGE_LEN] = {0};
 	b[0] = '<';
-	b[1] = to_tag;
-	b[2] = to_addr;
+	b[1] = 'X';
+	b[2] = '1';
 	b[3] = modem.tag;
 	b[4] = modem.addr;
-	b[5] = func;
-	b[6] = findx;
-	b[7] = action;
+	b[5] = 'J';
+	b[6] = '1';
+	b[7] = '=';
 	strncpy(&b[8], buff, MAX_MESSAGE_LEN-8);
 	uint8_t len = strlen(b);
 	b[len] = '>';
