@@ -11,7 +11,7 @@ typedef struct
     char        tag;
     char        addr;    
     uint8_t 	pin_rfm69_rst;
-    uint8_t 	pin_led;
+    int8_t 		pin_led;
     uint32_t 	led_timeout;
 } rf_modem_st;
 
@@ -25,7 +25,7 @@ class Rfm69Modem
 
     public:
 		RH_RF69   *_rf69p;
-		Rfm69Modem(RH_RF69 *rf69p, uint8_t pin_rfm69_rst,uint8_t pin_led);
+		Rfm69Modem(RH_RF69 *rf69p, uint8_t pin_rfm69_rst, int8_t pin_led);
 
         void initialize(char mod_tag, char mod_addr, uint8_t key[]);
 
