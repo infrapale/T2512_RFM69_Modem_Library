@@ -21,7 +21,9 @@ Rfm69Modem::Rfm69Modem(RH_RF69 *rf69p, uint8_t pin_rfm69_rst, int8_t pin_led)
     _rf69p = rf69p;
     modem.pin_rfm69_rst   = pin_rfm69_rst;
     modem.pin_led         = pin_led;
-    modem.led_timeout     = millis() + 4000;
+	modem.enable_uart_tx  = true;
+ 	modem.enable_uart_rx  = true;
+   modem.led_timeout     = millis() + 4000;
     led_timeout_ms        = millis() + 4000;
 }
 
@@ -37,8 +39,14 @@ void Rfm69Modem::initialize(char mod_tag, char mod_addr, uint8_t key[]){
 
 }
 
+void Rfm69Modem::enable_uart(bool enable_tx, bool enable_rx)
+{
+		modem.enable_uart_tx  = enable_tx;
+		modem.enable_uart_rx  = enable_rx;
+} 
+
 void Rfm69Modem::modem_task(void){
-    uart_rx_task();
+    if(modem.enable_uart_rx) uart_rx_task();
 	rfm69_receive_task();
     // rfm69_receive_message();
     // Serial.print("led_timeout_ms= "); Serial.print(led_timeout_ms);

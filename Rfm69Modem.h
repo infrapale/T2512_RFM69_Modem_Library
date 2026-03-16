@@ -9,7 +9,9 @@
 typedef struct
 {
     char        tag;
-    char        addr;    
+    char        addr;   
+	bool		enable_uart_rx;
+	bool		enable_uart_tx;	
     uint8_t 	pin_rfm69_rst;
     int8_t 		pin_led;
     uint32_t 	led_timeout;
@@ -28,6 +30,8 @@ class Rfm69Modem
 		Rfm69Modem(RH_RF69 *rf69p, uint8_t pin_rfm69_rst, int8_t pin_led);
 
         void initialize(char mod_tag, char mod_addr, uint8_t key[]);
+		
+		void enable_uart(bool enable_tx, bool enable_rx);
 
         void modem_task(void);
 
