@@ -32,6 +32,8 @@ class Rfm69Modem
         void initialize(char mod_tag, char mod_addr, uint8_t key[]);
 		
 		void enable_uart(bool enable_tx, bool enable_rx);
+		
+		void set_serial(Stream& s);
 
         void modem_task(void);
 

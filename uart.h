@@ -110,6 +110,9 @@ typedef struct
 /// @return -
 void uart_initialize(char mod_tag, char mod_addr);
 
+void uart_set_serial(Stream& s);
+
+
 /// @brief  Get pointer to module data
 /// @param
 /// @return data pointer

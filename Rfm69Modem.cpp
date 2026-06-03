@@ -41,8 +41,13 @@ void Rfm69Modem::initialize(char mod_tag, char mod_addr, uint8_t key[]){
 
 void Rfm69Modem::enable_uart(bool enable_tx, bool enable_rx)
 {
-		modem.enable_uart_tx  = enable_tx;
-		modem.enable_uart_rx  = enable_rx;
+	modem.enable_uart_tx  = enable_tx;
+	modem.enable_uart_rx  = enable_rx;
+} 
+
+void Rfm69Modem::set_serial(Stream& s)
+{
+	uart_set_serial(s);
 } 
 
 void Rfm69Modem::modem_task(void){

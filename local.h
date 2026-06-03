@@ -1,11 +1,11 @@
 #ifndef __LOCAL_H__
 #define __LOCAL_H__
 
-#ifdef  ADA_M0_RFM69
-#define SerialX  Serial1
-#else
-#define SerialX Serial
-#endif
+//#ifdef  ADA_M0_RFM69
+//#define SerialX  Serial1
+//#else
+//#define SerialX Serial
+//#endif
 
 #undef      MODEM_DEBUG_PRINT
 //#define     MODEM_DEBUG_PRINT

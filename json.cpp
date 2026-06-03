@@ -6,7 +6,6 @@ uint16_t json_convert_uart_node_to_json(char *buff, uart_msg_st *uart_p)
 {
     byte i;
     unsigned int json_len;
-    //Serial.println("ConvertFloatSensorToJson");
     String JsonString; 
     JsonString = "{\"Z\":\"";
     JsonString += uart_p->node.zone;
