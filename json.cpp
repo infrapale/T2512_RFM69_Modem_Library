@@ -26,7 +26,7 @@ uint16_t json_convert_uart_node_to_json(char *buff, uart_msg_st *uart_p)
         //for (i=0;i<MAX_MESSAGE_LEN;i++) radio_packet[i]=0;
         JsonString.toCharArray(buff, MAX_MESSAGE_LEN);
         #ifdef DEBUG_PRINT
-        Serial.println(json_len);
+		Serial.print("json_len"); Serial.println(json_len);
         #endif       
         return( json_len );
     }

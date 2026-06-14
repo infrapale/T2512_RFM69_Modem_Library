@@ -31,9 +31,9 @@ void rfm69_initialize(RH_RF69 *rf69_p, uint8_t pin_rst, uint8_t key[])
 {
     rf69p = rf69_p;
     pinMode(pin_rst, OUTPUT);
-    digitalWrite(pin_rst, LOW);
+    digitalWrite(pin_rst, LOW);    	delay(100);
     digitalWrite(pin_rst, HIGH);    delay(100);
-    digitalWrite(pin_rst, LOW);    delay(100);
+
 
     if (!rf69p->init()) {
        Serial.println(F("RFM69 radio init failed"));
