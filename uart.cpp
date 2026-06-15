@@ -5,7 +5,7 @@
 #include "rfm69.h"
 
 uart_msg_st         uart;
-static Stream* uart_serial = NULL; 
+static Stream* uart_serial = nullptr; 
 
 
 void uart_rx_task(void);
@@ -30,7 +30,7 @@ void uart_set_serial(Stream& s)
 
 void uart_read_uart(void)
 {
-	if(uart_serial != NULL)
+	if(uart_serial != nullptr)
 	{
 		if (uart_serial->available())
 		{
@@ -216,7 +216,7 @@ void uart_radiate_node_json(char *buff)
 
 void uart_exec_cmnd(uart_cmd_et ucmd)
 {
-	if(uart_serial != NULL)
+	if(uart_serial != nullptr)
 	{
 		switch(ucmd)
 		{

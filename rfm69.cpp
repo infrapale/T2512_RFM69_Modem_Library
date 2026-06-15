@@ -36,8 +36,11 @@ void rfm69_initialize(RH_RF69 *rf69_p, uint8_t pin_rst, uint8_t key[])
 
 
     if (!rf69p->init()) {
-       Serial.println(F("RFM69 radio init failed"));
-       while (1){ delay(10000);};
+		Serial.println(F("RFM69 radio init failed"));
+		while (1){ 
+			Serial.println("@rfm#");
+			delay(10000);
+		};
     }
     #ifdef MODEM_DEBUG_PRINT
     Serial.println(F("RFM69 radio init OK!"));
