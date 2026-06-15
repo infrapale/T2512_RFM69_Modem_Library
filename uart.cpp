@@ -4,8 +4,10 @@
 #include "json.h"
 #include "rfm69.h"
 
+#define Serial69  Serial1
+
 uart_msg_st         uart;
-static Stream* uart_serial = nullptr; 
+//static Stream* uart_serial = nullptr; 
 
 
 void uart_rx_task(void);
@@ -25,17 +27,17 @@ void uart_initialize(char mod_tag, char mod_addr)
 
 void uart_set_serial(Stream& s)
 {
-    uart_serial = &s;
+    // uart_serial = &s;
 }
 
 void uart_read_uart(void)
 {
-	if(uart_serial != nullptr)
+	// if(uart_serial != nullptr)
 	{
-		if (uart_serial->available())
+		if (Serial69.available())
 		{
 			String Str;
-			Str  = uart_serial->readStringUntil('\n');
+			Str  = Serial69.readStringUntil('\n');
 			#ifdef MODEM_DEBUG_PRINT
 			Serial.println(Str);
 			#endif  
@@ -216,7 +218,7 @@ void uart_radiate_node_json(char *buff)
 
 void uart_exec_cmnd(uart_cmd_et ucmd)
 {
-	if(uart_serial != nullptr)
+	// if(uart_serial != nullptr)
 	{
 		switch(ucmd)
 		{
@@ -230,7 +232,7 @@ void uart_exec_cmnd(uart_cmd_et ucmd)
 				uart_prepare_reply(); 
 				if(rfm69_receive_message_is_avail()) uart.tx.msg[UART_FRAME_POS_DATA] = '1';
 				else uart.tx.msg[UART_FRAME_POS_DATA] = '0';
-				uart_serial->println(uart.tx.msg);
+				Serial69.println(uart.tx.msg);
 				break;
 			case UART_CMD_GET_RSSI:
 				uart_prepare_reply(); 
@@ -243,17 +245,17 @@ void uart_exec_cmnd(uart_cmd_et ucmd)
 					uart.tx.msg[len+1] = 0x00;
 				}
 				else uart.tx.msg[UART_FRAME_POS_DATA] = UART_FRAME_DUMMY;
-				uart_serial->println(uart.tx.msg);
+				Serial69.println(uart.tx.msg);
 				break;
 			case UART_CMD_READ_RAW:
 				uart_build_raw_tx_str();
 				rfm69_clr_receive_message_flag();
-				uart_serial->println(uart.tx.msg);          
+				Serial69.println(uart.tx.msg);          
 				break;
 			case UART_CMD_READ_NODE:
 				uart_build_node_tx_str();
 				rfm69_clr_receive_message_flag();
-				uart_serial->println(uart.tx.msg);          
+				Serial69.println(uart.tx.msg);          
 				break;
 			case UART_CMD_SET_PARAM:
 				rfm69_set_transparent(uart.rx.msg[UART_FRAME_POS_DATA] == '1');
